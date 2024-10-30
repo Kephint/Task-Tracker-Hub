@@ -2,8 +2,24 @@ import { useState } from 'react'
 
 const AddTask = ({ onAdd }) => {
   const [text, setText] = useState('')
-  const [day, setDay] = useState('')
+  const [dateInput, setDateInput] = useState('')
+  const [formattedDate, setFormattedDate] = useState('')
   const [reminder, setReminder] = useState(false)
+
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('id-ID', options);
+  }
+
+  const handleDateChange = (e) => {
+    const inputDate = e.target.value;
+    setDateInput(inputDate);
+    if (inputDate) {
+      setFormattedDate(formatDate(inputDate));
+    } else {
+      setFormattedDate('');
+    }
+  }
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -13,10 +29,11 @@ const AddTask = ({ onAdd }) => {
       return
     }
 
-    onAdd({ text, day, reminder })
+    onAdd({ text, day: formattedDate, reminder })
 
     setText('')
-    setDay('')
+    setDateInput('')
+    setFormattedDate('')
     setReminder(false)
   }
 
@@ -34,20 +51,22 @@ const AddTask = ({ onAdd }) => {
       <div className='form-control'>
         <label>Day & Time</label>
         <input
-          type='text'
-          placeholder='Add Day & Time'
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
+          type='date'
+          value={dateInput}
+          onChange={handleDateChange}
         />
+        {formattedDate && <p className="formatted-date">{formattedDate}</p>}
       </div>
       <div className='form-control form-control-check'>
-        <label>Set Reminder</label>
-        <input
-          type='checkbox'
-          checked={reminder}
-          value={reminder}
-          onChange={(e) => setReminder(e.currentTarget.checked)}
-        />
+        <label>
+          <input
+            type='checkbox'
+            checked={reminder}
+            value={reminder}
+            onChange={(e) => setReminder(e.currentTarget.checked)}
+          />
+          Set Reminder
+        </label>
       </div>
 
       <input type='submit' value='Save Task' className='btn btn-block' />

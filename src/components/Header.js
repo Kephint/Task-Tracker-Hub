@@ -1,18 +1,27 @@
 import PropTypes from 'prop-types'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import Button from './Button'
+import { FaArrowLeft, FaTimes, FaPlus } from 'react-icons/fa'
 
-const Header = ({ title, onAdd, showAdd }) => {
+const Header = ({ title, onAdd, showAdd, customClass }) => {
   const location = useLocation()
 
   return (
     <header className='header'>
-      <h1>{title}</h1>
+      <div className='header-content'>
+        <h1 className={customClass}>{title}</h1>
+        {location.pathname === '/about' && (
+          <Link to='/' className='go-back-button'>
+            <FaArrowLeft className='go-back-icon' /> Go Back
+          </Link>
+        )}
+      </div>
       {location.pathname === '/' && (
         <Button
-          color={showAdd ? 'red' : 'green'}
-          text={showAdd ? 'Close' : 'Add'}
+          color={showAdd ? 'red' : '#ff9900'}
+          // text={showAdd ? 'Close' : 'Add'}
           onClick={onAdd}
+          icon={showAdd ? <FaTimes /> : <FaPlus/>}
         />
       )}
     </header>
@@ -20,7 +29,8 @@ const Header = ({ title, onAdd, showAdd }) => {
 }
 
 Header.defaultProps = {
-  title: 'Task Tracker',
+  title: 'Task',
+  customClass: 'judul',
 }
 
 Header.propTypes = {

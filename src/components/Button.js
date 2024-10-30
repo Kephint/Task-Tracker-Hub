@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const Button = ({ color, text, onClick }) => {
+const Button = ({ color, text, onClick, icon }) => {
   return (
     <button
       onClick={onClick}
@@ -8,6 +8,7 @@ const Button = ({ color, text, onClick }) => {
       className='btn'
     >
       {text}
+      {icon && <span className='button-icon'>{icon}</span>}
     </button>
   )
 }
@@ -20,6 +21,7 @@ Button.propTypes = {
   text: PropTypes.string,
   color: PropTypes.string,
   onClick: PropTypes.func,
+  icon: PropTypes.element,
 }
 
 export default Button
